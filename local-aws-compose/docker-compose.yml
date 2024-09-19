@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  localstack:
+    image: localstack/localstack
+    container_name: livestream_data_pipeline
+    ports:
+      - "4566:4566"            # LocalStack Gateway
+      - "4510-4559:4510-4559"  # external services port range
+    environment:
+      - SERVICES=s3,sqs,sns,iam,lambda,cloudwatch,events, kinesis, firehose, dynamodb, secretsmanager
+      - DEBUG=${DEBUG:-0}
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
